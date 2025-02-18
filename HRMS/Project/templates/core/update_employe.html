@@ -1,0 +1,187 @@
+<style>
+    /* Center the form */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .card {
+        width: 50%;
+        max-width: 600px;
+        border-radius: 12px;
+        background: #ffffff;
+        border: none;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 24px;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-select,
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="number"] {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .form-select:focus,
+    input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .alert {
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* Centering form fields */
+    .form-container {
+        padding: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="card shadow-lg p-4">
+        <h2 class="mb-4 text-center">Update Employee</h2>
+
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Employee Update Form -->
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Display form errors -->
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>❌ Please correct the following errors:</strong>
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                <li><strong>{{ field|title }}</strong>: {{ errors|striptags }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="id_first_name" class="form-label">First Name</label>
+                    {{ form.first_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_last_name" class="form-label">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Username</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_mobile" class="form-label">Mobile</label>
+                    {{ form.mobile }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_date_of_joining" class="form-label">Date of Joining</label>
+                    {{ form.date_of_joining }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="dept_id" class="form-label">Department</label>
+                    <select name="dept" id="id_dept" class="form-select">
+                        <option value="">Select Department</option>
+                        {% for department in departments %}
+                            <option value="{{ department.dept_id }}">{{ department.dept_name }}</option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+
+                <div class="mb-3">
+                    <label for="role_id" class="form-label">Role</label>
+                    <select name="role" id="id_role" class="form-select">
+                        <option value="">-- Select Role --</option>
+                        {% for role in roles %}
+                            <option value="{{ role.id }}" {% if role == employee.role %}selected{% endif %}>
+                                {{ role.role_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="manager_id" class="form-label">Reporting Manager</label>
+                    <select name="manager_id" id="manager_id" class="form-select">
+                        <option value="">-- Select Manager (Optional) --</option>
+                        {% for manager in managers %}
+                            <option value="{{ manager.id }}" {% if manager == employee.reporting_manager %}selected{% endif %}>
+                                {{ manager.first_name }} {{ manager.last_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-primary px-4 me-3">Update Employee</button>
+                    <a href="{% url 'employee_list' %}" class="btn btn-secondary px-4">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+        <a class="navbar-brand text-white fw-bold" href="#">Admin Dashboard</a>
+        <div class="ms-auto">
+            <a href="{% url 'logout' %}" class="btn btn-light me-2">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Display Messages -->
+        {% if messages %}
+            <div class="alert alert-warning">
+                {% for message in messages %}
+                    <p class="mb-0">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Header and Add Department Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="text-primary">Department List</h3>
+            <a href="{% url "add_department" %}" class="btn btn-success">+ Add Department</a>
+        </div>
+
+        <a href="{% url "create_employee" %}" class="btn btn-success">+ Add Employe</a>
+        <a href="{% url "employee_list" %}" class="btn btn-success">+ Add Employe</a>
+        
+        <!-- Department Table -->
+        {% if departments %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th> 
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for department in departments %}
+                            <tr>
+                                <td><a href="{% url 'department_detail' department.dept_id %}">{{ department.dept_name }}</a></td>
+                                <td>{{ department.description }}</td>
+                                <td>
+                                    <a href="{% url 'update_department' department.dept_id %}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{% url 'delete_department' department.dept_id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this department?')">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">No departments available.</div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

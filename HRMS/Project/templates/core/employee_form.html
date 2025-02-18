@@ -1,0 +1,141 @@
+<div class="container mt-5">
+    <div class="card shadow p-4 border-0 rounded bg-white">
+        <h2 class="text-center text-dark mb-4 fw-bold">Create Employee</h2>
+
+        <!-- ✅ Display Messages -->
+        {% if messages %}
+            <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                {% for message in messages %}
+                    <p class="mb-0 fw-semibold">{{ message }}</p>
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="dept_id" class="form-label fw-semibold">Department:</label>
+                <select name="dept_id" id="dept_id" class="form-select">
+                    <option selected disabled>Select Department</option>
+                    {% for dept in departments %}
+                        <option value="{{ dept.dept_id }}">{{ dept.dept_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="role_id" class="form-label fw-semibold">Role:</label>
+                <select name="role_id" id="role_id" class="form-select">
+                    <option selected disabled>Select Role</option>
+                    {% for role in roles %}
+                        <option value="{{ role.id }}">{{ role.role_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Render form fields using a for loop -->
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary fw-semibold px-4">Back</a>
+                <button type="submit" class="btn btn-success fw-semibold px-4">Create Employee</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .form-select, 
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .form-select:focus, 
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0px 0px 6px rgba(40, 167, 69, 0.2);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+        transition: 0.3s;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        transition: 0.3s;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .alert {
+        border-radius: 5px;
+        margin-bottom: 1rem;
+    }
+
+    .alert-info {
+        background-color: #e9f5f8;
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+
+    .alert-dismissible .btn-close {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.875rem;
+    }
+</style>

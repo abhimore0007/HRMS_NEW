@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deactivate Department</title>
+    <style>
+        /* Reset and Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #dc3545;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        /* Warning Box */
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-left: 5px solid #ffc107;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        form {
+            display: inline;
+        }
+
+        /* Message Styling */
+        .message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border-left: 5px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+        
+        <h2>Deactivate Department</h2>
+        
+        <div class="warning">
+            ⚠️ Are you sure you want to deactivate <strong>{{ department.dept_name }}</strong>?  
+            <br>This will affect all employees in this department.
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Deactivate</button>
+        </form>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+
+</body>
+</html>
